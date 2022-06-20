@@ -16,7 +16,7 @@ export class DogsViewComponent implements OnInit {
   breeds$ = new BehaviorSubject<Dogs[]>([])
 
   selectedBreed = new FormControl('')
-  //sortedBreeds$ = new BehaviorSubject<boolean>(true)
+
   filteredBreeds$ = combineLatest([this.breeds$, this.selectedBreed.valueChanges.pipe(startWith(''))]).pipe(
     map(([dogs, selected]: [Dogs[], string | null]) => {
 
@@ -41,6 +41,15 @@ export class DogsViewComponent implements OnInit {
         }
       )
 
+  }
+  onReverse() {
+    this.filteredBreeds$ = combineLatest([this.breeds$, this.selectedBreed.valueChanges.pipe(startWith(''))]).pipe(
+      map(([dogs, selected]: [Dogs[], string | null]) => {
+
+        return selected ? dogs.filter((dog) => dog.name === selected) : dogs.reverse()
+
+      })
+    )
   }
 
 
